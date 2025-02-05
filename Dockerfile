@@ -1,7 +1,7 @@
 # =====================================================
 # Etapa 1: Build do CSS com Tailwind usando Node
 # =====================================================
-FROM node:16-alpine AS tailwind-builder
+FROM node:alpine AS tailwind-builder
 WORKDIR /app
 
 # Copia o arquivo package.json (certifique-se que o arquivo existe em ./package.json)
