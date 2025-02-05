@@ -17,8 +17,7 @@ COPY static/css/input.css ./static/css/input.css
 # RUN npx tailwindcss init
 
 # Executa o build do CSS: gera o arquivo minificado style.min.css
-RUN npx tailwindcss -i ./static/css/input.css -o ./static/css/style.min.css --minify
-
+RUN npm run build:tailwind
 
 # =====================================================
 # Etapa 2: Build da aplicação Go
