@@ -15,6 +15,8 @@ if [ "$ENVIRONMENT" = "development" ]; then
     wait
 else
     echo "Starting in production mode..."
-    make build
+    tailwindcss -i ./static/css/input.css -o ./static/css/style.min.css --minify
+    templ generate
+    go build -ldflags "-X main.Environment=production" -o ./bin/app ./cmd/main.go
     ./bin/app
 fi
