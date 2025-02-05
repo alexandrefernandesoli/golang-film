@@ -4,7 +4,10 @@
 FROM node:16-alpine AS tailwind-builder
 WORKDIR /app
 
-# Cria um package.json padrão e instala o Tailwind CSS
+# Copia o arquivo package.json (certifique-se que o arquivo existe em ./package.json)
+COPY package.json .
+
+# Instala as dependências do projeto
 RUN npm install
 
 # Copia o arquivo CSS de entrada (certifique-se que o arquivo existe em ./static/css/input.css)
