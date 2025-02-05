@@ -1,0 +1,52 @@
+# nixpacks.toml
+
+# =====================================================
+# Etapa 1: Build do CSS com Tailwind usando Node
+# =====================================================
+[phases.tailwind-builder]
+base_image = "node:alpine"
+commands = [
+    "npm install -g tailwindcss",
+    "npm install",
+    "npm run build:tailwind"
+]
+copy = [
+    { from = ".", to = "/app" }
+]
+
+# =====================================================
+# Etapa 2: Build da aplicação Go
+# =====================================================
+[phases.builder]
+base_image = "golang:1.23-alpine"
+commands = [
+    "apk add --no-cache make gcc g++ curl",
+    "go install github.com/a-h/templ/cmd/templ@latest",
+    "go install github.com/air-verse/air@latest",
+    "templ generate",
+    "go build -ldflags \"-X main.Environment=production\" -o ./bin/app ./cmd/main.go"
+]
+copy = [
+    { from = ".", to = "/app" },
+    { from = "/app/static/css/style.min.css", to = "/app/static/css/style.min.css" }
+]
+
+# =====================================================
+# Etapa Final: Imagem mínima para execução
+# =====================================================
+[phases.final]
+base_image = "alpine:latest"
+commands = [
+    "apk add --no-cache ca-certificates"
+]
+copy = [
+    { from = "/app/bin/app", to = "/app/app" },
+    { from = "/app/static", to = "/app/static" }
+]
+
+# =====================================================
+# Configurações finais
+# =====================================================
+[config]
+port = 4000
+start_command = "./app"
