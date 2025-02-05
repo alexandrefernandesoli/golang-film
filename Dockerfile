@@ -14,4 +14,4 @@ COPY . .
 
 EXPOSE 4000
 
-ENTRYPOINT [ "./dev/scripts/entrypoint.ssh" ]
+ENTRYPOINT [ "./dev/scripts/entrypoint.sh" ]
