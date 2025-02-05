@@ -41,7 +41,7 @@ COPY . .
 RUN templ generate
 
 # Build the Go application with production flags
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build \
+RUN CGO_ENABLED=1 GOOS=linux GOARCH=amd64 go build \
     -ldflags "-X main.Environment=production" \
     -o ./bin/app ./cmd/main.go
 
