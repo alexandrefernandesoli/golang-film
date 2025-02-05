@@ -1,6 +1,4 @@
 # nixpacks.toml
-[phases.setup]
-nixPkgs = ["go", "templ"]
 # =====================================================
 # Etapa 1: Build do CSS com Tailwind usando Node
 # =====================================================
@@ -19,6 +17,7 @@ copy = [
 # Etapa 2: Build da aplicação Go
 # =====================================================
 [phases.builder]
+nixPkgs = ["go", "templ"]
 base_image = "golang:1.23-alpine"
 commands = [
     "go install github.com/a-h/templ/cmd/templ@latest",
