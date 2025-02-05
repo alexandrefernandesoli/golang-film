@@ -13,9 +13,6 @@ RUN npm install -g tailwindcss
 # Install TailwindCSS globally
 RUN npm install -g tailwindcss postcss autoprefixer
 
-# Verify that TailwindCSS is installed
-RUN tailwindcss --version
-
 # Copy the rest of the frontend source files
 COPY . .
 
