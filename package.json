@@ -1,0 +1,15 @@
+{
+  "name": "gotth",
+  "version": "1.0.0",
+  "description": "A simple, modern stack for building fast web applications.",
+  "main": "tailwind.config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "tailwindcss": "^4.0.3"
+  }
+}
