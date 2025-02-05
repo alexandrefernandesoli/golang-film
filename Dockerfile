@@ -22,6 +22,9 @@ FROM golang:1.23 AS go-builder
 # Set the working directory inside the container
 WORKDIR /app
 
+# Install the 'templ' tool
+RUN go install github.com/a-h/templ/cmd/templ@latest
+
 # Copy Go module files
 COPY go.mod go.sum ./
 
