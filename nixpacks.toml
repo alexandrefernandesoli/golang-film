@@ -1,29 +1,16 @@
-# nixpacks.toml
-[phases.setup]
-nixPkgs = ["go", "templ", "node"]
-# =====================================================
-# Etapa 1: Build do CSS com Tailwind usando Node
-# =====================================================
-[phases.tailwind-builder]
-cmds = [
-    "npm install -g tailwindcss",
-    "npm install",
-    "npm run build:tailwind"
-]
+providers = ["...", "node", "go"]
 
-# =====================================================
-# Etapa 2: Build da aplicação Go
-# =====================================================
+[phases.setup]
+nixPkgs = ["...", "go", "templ", "nodejs_22"]
+
 [phases.builder]
 cmds = [
-    "go install github.com/a-h/templ/cmd/templ@latest",
-    "go install github.com/air-verse/air@latest",
-    "templ generate",
-    "go build -ldflags \"-X main.Environment=production\" -o ./bin/app ./cmd/main.go"
+  "npm install -g tailwindcss",
+  "npm run build:tailwind",
+  "go mod tidy",
+  "templ generate",
+  "go build -ldflags \"-X main.Environment=production\" -o ./bin/app ./cmd/main.go"
 ]
 
-# =====================================================
-# Configurações finais
-# =====================================================
 [start]
 cmd = "./bin/app"
