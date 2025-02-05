@@ -1,0 +1,45 @@
+package templates
+
+templ RegisterPage() {
+	<div hx-ext="response-targets" class="flex flex-col items-center justify-center h-full space-y-4">
+		<h1 class="text-2xl font-bold">
+			Register an account
+		</h1>
+		<form
+			hx-post="/register"
+			hx-trigger="submit"
+			hx-target-401="#register-error"
+			class="flex flex-col space-y-4 w-96"
+		>
+			<div id="register-error"></div>
+			<div class="flex flex-col space-y-2">
+				<label for="email">Your email</label>
+				<input class="px-4 py-2 bg-zinc-100" type="email" name="email" id="email" placeholder="name@company.com" required=""/>
+			</div>
+			<div class="flex flex-col space-y-2">
+				<label for="password">Password</label>
+				<input class="px-4 py-2 bg-zinc-100" type="password" name="password" id="password" placeholder="••••••••" required=""/>
+			</div>
+			@Button("submit") {
+				Register
+			}
+			<p>
+				Already have an account?
+				<a href="/login" class="underline hover:text-blue-600">Login</a>
+			</p>
+		</form>
+	</div>
+}
+
+templ RegisterSuccess() {
+	<h1>Registration successful</h1>
+	<p>Go to <a href="login">login</a></p>
+}
+
+
+templ RegisterError() {
+	<div>
+		<h1>Registration failed</h1>
+		<p>There was an error registering your account</p>
+	</div>
+}

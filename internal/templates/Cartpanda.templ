@@ -1,0 +1,47 @@
+package templates
+
+import (
+	"goth/internal/products"
+	"strconv"
+)
+
+script copyToClipboard(checkoutString string) {
+	copyToClipboard(checkoutString)
+}
+
+templ Cartpanda(products []products.Product, lastUpdated string) {
+	<div class="flex flex-col items-center py-4 space-y-2">
+		<h1 class="text-xl font-bold text-center">
+			Welcome to Cartpanda Products | Last Updated: { lastUpdated }
+		</h1>
+		
+		<table border="1">
+			<tr class="border">
+				<th>Image</th>
+				<th>ID</th>
+				<th>Title</th>
+				<th>Variante</th>
+				<th>Preço</th>
+				<th>Checkout</th>
+			</tr>
+			for _, product := range products {
+				for _, variant := range product.ProductVariants {
+					{{ checkoutString := "https://eightcomercio.mycartpanda.com/checkout/" + strconv.Itoa(variant.ID) + ":1" }}
+					<tr class="border">
+						if len(variant.VariantImage) > 0 {
+							<td><img src={ variant.VariantImage[0].Image.URL } width="100" height="100"></td>
+						} else {
+							<td></td>
+						}
+
+						<td><a href="https://accounts.cartpanda.com/products/edit/" target="_blank">{ strconv.Itoa(product.ID) }</a></td>
+						<td>{product.Title}</td>
+						<td>{variant.Title}</td>
+						<td>{variant.Price}</td>
+						<td><button onclick={ copyToClipboard(checkoutString) }>{ checkoutString }</button></td>
+					</tr>
+				}
+			}
+		</table>
+	</div>
+}
