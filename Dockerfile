@@ -5,7 +5,7 @@ FROM node:16-alpine AS tailwind-builder
 WORKDIR /app
 
 # Cria um package.json padrão e instala o Tailwind CSS
-RUN npm init -y && npm install tailwindcss
+RUN npm init -y && npm install -g tailwindcss
 
 # Copia o arquivo CSS de entrada (certifique-se que o arquivo existe em ./static/css/input.css)
 COPY static/css/input.css ./static/css/input.css
