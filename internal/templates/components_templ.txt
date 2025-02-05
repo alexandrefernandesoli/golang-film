@@ -1,3 +1,0 @@
-<button type=\"
-\" class=\"py-2 bg-gradient-to-r from-zinc-500 via-zinc-400 to-zinc-500 text-white rounded-md hover:from-zinc-400 hover:via-zinc-500 hover:to-zinc-400 transition-all duration-200 w-full text-center\">
-</button>
