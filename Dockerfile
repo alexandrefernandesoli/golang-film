@@ -60,6 +60,9 @@ COPY --from=go-builder /app/bin/app /app/bin/app
 # Copy the built frontend assets from the frontend builder stage
 COPY --from=frontend-builder /app/static/css/style.min.css /app/static/css/style.min.css
 
+# log all the files in the /app directory
+RUN ls -la /app
+
 # Expose the port the app will run on (adjust as needed)
 EXPOSE 4000
 
