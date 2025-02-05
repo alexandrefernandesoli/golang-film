@@ -17,7 +17,7 @@ RUN npm install -g tailwindcss postcss autoprefixer
 COPY . .
 
 # Build TailwindCSS assets
-RUN npx tailwindcss -i ./static/css/input.css -o ./static/css/style.min.css --minify
+CMD ["npx", "tailwindcss", "-i", "./static/css/input.css", "-o", "./static/css/style.min.css", "--minify"]
 
 # Stage 2: Build the Go application
 FROM golang:1.23 AS go-builder
