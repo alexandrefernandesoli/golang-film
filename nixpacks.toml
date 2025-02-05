@@ -1,8 +1,3 @@
-providers = ["...", "node", "go"]
-
-[phases.setup]
-nixPkgs = ["...", "go", "templ", "nodejs_22"]
-
 [phases.builder]
 cmds = [
   "npm install -g tailwindcss",
