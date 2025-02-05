@@ -8,7 +8,7 @@ WORKDIR /app
 COPY package.json .
 
 # Instala as dependências do projeto
-RUN npm install
+RUN npm install -g tailwindcss
 
 # Copia o arquivo CSS de entrada (certifique-se que o arquivo existe em ./static/css/input.css)
 COPY static/css/input.css ./static/css/input.css
