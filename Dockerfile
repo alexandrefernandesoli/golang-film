@@ -14,4 +14,6 @@ COPY . .
 
 EXPOSE 4000
 
+RUN chmod +x dev/scripts/entrypoint.sh
+
 ENTRYPOINT [ "./dev/scripts/entrypoint.sh" ]
