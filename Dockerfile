@@ -1,22 +1,20 @@
 # =====================================================
-# Etapa 1: Build do CSS com Tailwind (sem package.json)
+# Etapa 1: Build do CSS com Tailwind usando Node
 # =====================================================
-FROM alpine:latest AS tailwind-builder
+FROM node:16-alpine AS tailwind-builder
 WORKDIR /app
 
-# Instala o curl para baixar o binário do Tailwind
-RUN apk add --no-cache curl
+# Cria um package.json padrão e instala o Tailwind CSS
+RUN npm init -y && npm install tailwindcss
 
-# Copia os arquivos do projeto (garanta que o arquivo input.css esteja em ./static/css/)
-COPY . .
+# Copia o arquivo CSS de entrada (certifique-se que o arquivo existe em ./static/css/input.css)
+COPY static/css/input.css ./static/css/input.css
 
-# Baixa o binário do Tailwind, torna-o executável e move para o PATH
-RUN curl -sLO https://github.com/tailwindlabs/tailwindcss/releases/latest/download/tailwindcss-linux-x64 && \
-    chmod +x tailwindcss-linux-x64 && \
-    mv tailwindcss-linux-x64 /usr/local/bin/tailwindcss
+# (Opcional) Se necessário, gere o arquivo de configuração do Tailwind
+# RUN npx tailwindcss init
 
-# Executa o build do CSS com Tailwind
-RUN tailwindcss -i ./static/css/input.css -o ./static/css/style.min.css --minify
+# Executa o build do CSS: gera o arquivo minificado style.min.css
+RUN npx tailwindcss -i ./static/css/input.css -o ./static/css/style.min.css --minify
 
 
 # =====================================================
@@ -25,23 +23,23 @@ RUN tailwindcss -i ./static/css/input.css -o ./static/css/style.min.css --minify
 FROM golang:1.23-alpine AS builder
 WORKDIR /app
 
-# Instala dependências de sistema necessárias para compilar a aplicação
+# Instala dependências necessárias para compilar a aplicação
 RUN apk add --no-cache make gcc g++ curl
 
 # Instala ferramentas auxiliares (como templ e air)
 RUN go install github.com/a-h/templ/cmd/templ@latest && \
     go install github.com/air-verse/air@latest
 
-# Copia o CSS gerado na etapa anterior para este estágio
+# Copia o CSS gerado na etapa anterior para o diretório correspondente
 COPY --from=tailwind-builder /app/static/css/style.min.css ./static/css/
 
-# Copia o restante dos arquivos do projeto
+# Copia o restante dos arquivos do projeto para a build do Go
 COPY . .
 
-# (Opcional) Gera os templates, se sua aplicação utilizar o 'templ'
+# (Opcional) Gera os templates se sua aplicação os utilizar
 RUN templ generate
 
-# Compila a aplicação Go
+# Compila a aplicação Go com a flag que define o ambiente como produção
 RUN go build -ldflags "-X main.Environment=production" -o ./bin/app ./cmd/main.go
 
 
@@ -51,15 +49,15 @@ RUN go build -ldflags "-X main.Environment=production" -o ./bin/app ./cmd/main.g
 FROM alpine:latest
 WORKDIR /app
 
-# Instala certificados de CA para conexões seguras (se necessário)
+# Instala certificados CA para conexões HTTPS (se necessário)
 RUN apk add --no-cache ca-certificates
 
-# Copia o binário e os arquivos estáticos (incluindo o CSS gerado) da etapa builder
+# Copia apenas os artefatos necessários da etapa de build
 COPY --from=builder /app/bin/app .
 COPY --from=builder /app/static ./static
 
 # Expõe a porta utilizada pela aplicação
 EXPOSE 4000
 
-# Comando de inicialização
+# Comando para iniciar a aplicação
 CMD ["./app"]
